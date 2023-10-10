@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+if ! cargo fmt -- --check
+then
+    echo "There are some code style issues."
+    echo "Please run `cargo fmt` and try again."
+    exit 1
+fi
+
+if ! cargo clippy --all-targets -- -D warnings
+then
+    echo "There are some clippy issues."
+    echo "Please fix them and try again."
+    exit 1
+fi
+
+if ! cargo test
+then
+    echo "There are some test failures."
+    echo "Please fix them and try again."
+    exit 1
+fi
+
+exit 0
